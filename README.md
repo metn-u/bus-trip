@@ -1,6 +1,9 @@
 # CMPE 1101 - Otobüs Biletleme Sistemi Projesi
 
 Bu proje, C programlama dili kullanılarak geliştirilmiş, dosya tabanlı bir otobüs bilet satış ve yönetim sistemidir.
+````bash
+gcc main.c -o program
+./program
 
 ## 📌 Proje Durumu
 * **Tamamlananlar:** Sefer oluşturma (Create), Sefer listeleme (Read).
