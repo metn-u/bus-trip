@@ -4,7 +4,7 @@ Bu proje, C programlama dili kullanılarak geliştirilmiş, dosya tabanlı bir o
 ````bash
 gcc main.c -o program
 ./program
-
+````
 ## 📌 Proje Durumu
 * **Tamamlananlar:** Sefer oluşturma (Create), Sefer listeleme (Read).
 * **Eksikler:** Bilet satışı, Güncelleme, Silme, Sorgulama ve Raporlama.
