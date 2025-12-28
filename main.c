@@ -15,12 +15,12 @@ void menu(){
 
 
 typedef struct{
-    int ID;
-    char Departure[20];
-    char Arrival[20];
-    char Date[10];
-    char DepartureTime[10];
-    char BusPlate[10];
+    char ID[20];
+    char Departure[40];
+    char Arrival[40];
+    char Date[30];
+    char DepartureTime[30];
+    char BusPlate[30];
     char DriverName[30];
     int Seats;
 }Trip;
@@ -41,40 +41,48 @@ void CreateTrip(){
 
     printf("--- Creating New Trip ---\n");
     printf("Trip ID:");
-    scanf("%d", &newTrip.ID);
+    fgets(newTrip.ID, sizeof(newTrip.ID),stdin);
+    newTrip.ID[strcspn(newTrip.ID, "\n")] = 0;
     printf("\n");
 
     printf("Departure Point:");
-    scanf("%s", newTrip.Departure);
-    printf("\n");
+    fgets(newTrip.Departure, sizeof(newTrip.Departure),stdin);
+    newTrip.Departure[strcspn(newTrip.Departure, "\n")] = 0;
 
+    printf("\n");
     printf("Arrival Point:");
-    scanf("%s", newTrip.Arrival);
+    fgets(newTrip.Arrival, sizeof(newTrip.Arrival),stdin);
+    newTrip.Arrival[strcspn(newTrip.Arrival, "\n")] = 0;
     printf("\n");
 
     printf("Trip Date:");
     fgets(newTrip.Date, sizeof(newTrip.Date),stdin);
+    newTrip.Date[strcspn(newTrip.Date, "\n")] = 0;
     printf("\n");
 
     printf("Trip departure time:");
     fgets(newTrip.DepartureTime, sizeof(newTrip.DepartureTime),stdin);
+    newTrip.DepartureTime[strcspn(newTrip.DepartureTime, "\n")] = 0;
     printf("\n");
 
     printf("Bus Plate:");
     fgets(newTrip.BusPlate, sizeof(newTrip.BusPlate),stdin);
+    newTrip.BusPlate[strcspn(newTrip.BusPlate, "\n")] = 0;
     printf("\n");
 
     printf("Driver Name:");
     fgets(newTrip.DriverName, sizeof(newTrip.DriverName),stdin);
+    newTrip.DriverName[strcspn(newTrip.DriverName, "\n")] = 0;
     printf("\n");
 
     printf("Number of Seats:");
     scanf("%d", &newTrip.Seats);
+    getchar();
     printf("\n");
 
     // Girilen bilgilerin özeti
     printf("\n--- Trip Created Successfully ---\n");
-    printf("ID: %d\n", newTrip.ID);
+    printf("ID: %s\n", newTrip.ID);
     printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
     printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
     printf("Plate: %s\n", newTrip.BusPlate);
