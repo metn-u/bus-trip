@@ -1,8 +1,10 @@
 # bus-trip
 Repository for Final Project of Introduction to Programming lecture. Project about bus trip system works on CLI. Project written in C.
 
-To execute program : gcc main.c -o program
-                     ./program
+To execute program :
+
+gcc main.c -o program
+./program
 
 
 ### Yapılacaklar Listesi
