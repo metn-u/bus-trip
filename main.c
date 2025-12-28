@@ -2,15 +2,41 @@
 #include <stdlib.h>
 #include <string.h>
 
+void CreateTrip();
+
+void ListTrips(); 
 
 void menu(){
-    printf("--- OTÖBÜS BİLET SİSTEMİ ---\n");
-    printf("1. Yeni Sefer Oluştur\n"); // [cite: 13]
-    printf("2. Seferleri Listele\n");   // [cite: 17]
-    printf("3. Bilet Satış\n");         // [cite: 18]
-    printf("0. Çıkış\n");
-    printf("Seçiminiz: ");
+    printf("--- BUS TICKET SYSTEM ---\n");
+    printf("1. Create New Trip\n"); 
+    printf("2. List Trips\n");   
+    printf("3. Sell Tickets\n");         
+    printf("0. Exit\n");
+    printf("Your Choice: ");
+    int choice;
+    scanf("%d", &choice);
+    getchar(); 
 
+    switch(choice){
+        case 1:
+            CreateTrip();
+            menu();
+            break;
+        case 2:
+            ListTrips();
+            menu();
+            break;
+        case 3:
+            printf("Sell Tickets function is not implemented yet.\n");
+            menu();
+            break;
+        case 0:
+            printf("Exiting...\n");
+            exit(0);
+        default:
+            printf("Invalid choice! Please try again.\n");
+            menu();
+    }
 }
 
 
@@ -25,15 +51,18 @@ typedef struct{
     int Seats;
 }Trip;
 
-void CreateTrip();
+
 
 int main() {
 
     printf("Welcome To Bus Ticketing System\n");
 
-    CreateTrip();
+    menu();
 
     return 0;
+
+
+
 }
 
 void CreateTrip(){
@@ -92,7 +121,70 @@ void CreateTrip(){
 
 
 
+    /*
+    
+    // Dosyaya kaydetme
+    
+    */
+
+    FILE *file; 
+    file = fopen("trips.dat", "a");
+
+    if(file == NULL){
+        printf("Error File doesn't exist!\n");
+        return;
+    }
+
+    fprintf(file, "%s|%s|%s|%s|%s|%s|%s|%d\n", 
+            newTrip.ID, 
+            newTrip.Departure, 
+            newTrip.Arrival, 
+            newTrip.Date, 
+            newTrip.DepartureTime, 
+            newTrip.BusPlate, 
+            newTrip.DriverName, 
+            newTrip.Seats);
+            
+    fclose(file);
+    
+    
+
 
 }
 
+void ListTrips(){
+    FILE *file = fopen("trips.dat", "r");
+    if(file == NULL){
+        printf("No trips available.\n");
+        return;
+    }
+
+    char line[250];
+    printf("\n--- Available Trips ---\n");
+    while(fgets(line, sizeof(line), file)){
+        Trip trip;
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
+               trip.ID, 
+               trip.Departure, 
+               trip.Arrival, 
+               trip.Date, 
+               trip.DepartureTime, 
+               trip.BusPlate, 
+               trip.DriverName, 
+               &trip.Seats);
+        
+        printf("ID: %s | Route: %s -> %s | Date/Time: %s at %s | Plate: %s | Driver: %s | Seats: %d\n", 
+               trip.ID, 
+               trip.Departure, 
+               trip.Arrival, 
+               trip.Date, 
+               trip.DepartureTime, 
+               trip.BusPlate, 
+               trip.DriverName, 
+               trip.Seats);
+    }
+    printf("-----------------------\n");
+
+    fclose(file);
+}
 
