@@ -2,9 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+typedef struct{
+    char ID[20];
+    char Departure[40];
+    char Arrival[40];
+    char Date[30];
+    char DepartureTime[30];
+    char BusPlate[30];
+    char DriverName[30];
+    int Seats;
+}Trip;
+
+
+
 void CreateTrip();
 
 void ListTrips(); 
+
+int checkID(char * id);
 
 void menu(){
     printf("--- BUS TICKET SYSTEM ---\n");
@@ -27,7 +43,7 @@ void menu(){
             menu();
             break;
         case 3:
-            printf("Sell Tickets function is not implemented yet.\n");
+            printf("Sell Tickets function is not implemented yet.\n");           
             menu();
             break;
         case 0:
@@ -39,17 +55,6 @@ void menu(){
     }
 }
 
-
-typedef struct{
-    char ID[20];
-    char Departure[40];
-    char Arrival[40];
-    char Date[30];
-    char DepartureTime[30];
-    char BusPlate[30];
-    char DriverName[30];
-    int Seats;
-}Trip;
 
 
 
@@ -72,6 +77,12 @@ void CreateTrip(){
     printf("Trip ID:");
     fgets(newTrip.ID, sizeof(newTrip.ID),stdin);
     newTrip.ID[strcspn(newTrip.ID, "\n")] = 0;
+
+    if(checkID(newTrip.ID)){
+        printf("Trip creation aborted due to duplicate ID.\n");
+        return;
+    }
+
     printf("\n");
 
     printf("Departure Point:");
@@ -188,3 +199,28 @@ void ListTrips(){
     fclose(file);
 }
 
+int checkID(char * id){
+    FILE *file = fopen("trips.dat", "r");
+    if(file == NULL){
+        printf("No trips available.\n");
+        return 0;
+    }
+
+    char line[250];
+    char tempID[20];
+
+    while(fgets(line, sizeof(line), file)){
+        
+        sscanf(line, "%[^|]|", tempID);
+
+        if(strcmp(tempID, id) == 0){
+            printf("-> This ID already exists!\n");
+            fclose(file);
+            return 1;
+        }
+    }
+    
+
+    fclose(file);
+    return 0;  
+}     
