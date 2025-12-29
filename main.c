@@ -213,7 +213,7 @@ void ListTrips(){
     fclose(file);
 }
 
-void eraseTrip(){
+void changeTrip(){
     // Trip silme fonksiyonu burada implemente edilebilir
     FILE *file = fopen("trips.dat", "r");
     FILE *tempFile = fopen("temp.dat", "w");
@@ -223,9 +223,141 @@ void eraseTrip(){
     }
 
     char line[300];
-    printf("\n--- Erase Trip ---\n");
-    printf("Enter Trip ID to erase: ");
+    printf("\n--- Change Trip Details ---\n");
+    printf("Enter Trip ID to change: ");
     char id[20];
+    fgets(id, sizeof(id), stdin);
+    id[strcspn(id, "\n")] = 0;
+    int found = 0;
+
+    while (fgets(line,sizeof(line),file))
+    {
+        Trip trip;
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
+               trip.ID, 
+               trip.Departure, 
+               trip.Arrival, 
+               trip.Date, 
+               trip.DepartureTime, 
+               trip.BusPlate, 
+               trip.DriverName, 
+               &trip.Seats);
+        
+        if(strcmp(trip.ID,id)==0){
+            found = 1;
+            printf("Trip with ID %s found. Enter new details.\n", id);
+            // Yeni detayları al
+
+                Trip newTrip; 
+
+                printf("\n");
+
+                printf("Departure Point:");
+                fgets(newTrip.Departure, sizeof(newTrip.Departure),stdin);
+                newTrip.Departure[strcspn(newTrip.Departure, "\n")] = 0;
+
+                printf("\n");
+                printf("Arrival Point:");
+                fgets(newTrip.Arrival, sizeof(newTrip.Arrival),stdin);
+                newTrip.Arrival[strcspn(newTrip.Arrival, "\n")] = 0;
+                printf("\n");
+
+                printf("Trip Date:");
+                fgets(newTrip.Date, sizeof(newTrip.Date),stdin);
+                newTrip.Date[strcspn(newTrip.Date, "\n")] = 0;
+                printf("\n");
+
+                printf("Trip departure time:");
+                fgets(newTrip.DepartureTime, sizeof(newTrip.DepartureTime),stdin);
+                newTrip.DepartureTime[strcspn(newTrip.DepartureTime, "\n")] = 0;
+                printf("\n");
+
+                printf("Bus Plate:");
+                fgets(newTrip.BusPlate, sizeof(newTrip.BusPlate),stdin);
+                newTrip.BusPlate[strcspn(newTrip.BusPlate, "\n")] = 0;
+                printf("\n");
+
+                printf("Driver Name:");
+                fgets(newTrip.DriverName, sizeof(newTrip.DriverName),stdin);
+                newTrip.DriverName[strcspn(newTrip.DriverName, "\n")] = 0;
+                printf("\n");
+
+                printf("Number of Seats:");
+                scanf("%d", &newTrip.Seats);
+                getchar();
+                printf("\n");
+
+                // Girilen bilgilerin özeti
+                printf("\n--- Trip Created Successfully ---\n");
+                printf("ID: %s\n", id);
+                printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
+                printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
+                printf("Plate: %s\n", newTrip.BusPlate);
+                printf("Driver: %s\n", newTrip.DriverName);
+                printf("Seats: %d\n", newTrip.Seats);
+                printf("---------------------------------\n");
+
+
+
+                /*
+                
+                // Dosyaya kaydetme
+                
+                */
+
+                
+
+                fprintf(tempFile, "%s|%s|%s|%s|%s|%s|%s|%d\n", 
+                        id, 
+                        newTrip.Departure, 
+                        newTrip.Arrival, 
+                        newTrip.Date, 
+                        newTrip.DepartureTime, 
+                        newTrip.BusPlate, 
+                        newTrip.DriverName, 
+                        newTrip.Seats);
+                        
+                
+
+
+
+
+
+
+
+        }else{
+            fputs(line,tempFile);
+        }
+
+    }
+    
+    if(!found){
+        printf("Trip with ID %s not found.\n", id);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    remove("trips.dat");
+    rename("temp.dat","trips.dat");
+
+}
+
+void eraseTrip(){
+    
+     // Trip silme fonksiyonu burada implemente edilebilir
+    FILE *file = fopen("trips.dat", "r");
+    FILE *tempFile = fopen("temp.dat", "w");
+    if(file == NULL||tempFile == NULL){
+        printf("Database corrupted.\n");
+        return;
+    }
+
+    char line[300];
+    printf("\n--- Erase Trip ---\n");
+    
+    char id[20];
+    printf("Type Trip ID to erase.\n");
     fgets(id, sizeof(id), stdin);
     id[strcspn(id, "\n")] = 0;
     int found = 0;
@@ -262,136 +394,7 @@ void eraseTrip(){
     remove("trips.dat");
     rename("temp.dat","trips.dat");
 
-}
-
-void changeTrip(){
-    FILE *file = fopen("trips.dat", "r");
-    FILE *tempFile = fopen("temp.dat", "w");
-    if(file == NULL||tempFile == NULL){
-        printf("No trips available.\n");
-        return;
-    }
-
-    char line[300];
-    printf("\n--- Change Trip Details ---\n");
-    printf("Enter Trip ID to change: ");
-    char id[20];
-    fgets(id, sizeof(id), stdin);
-    id[strcspn(id, "\n")] = 0;
-    
-    while(fgets(line, sizeof(line), file)){
-        Trip trip;
-        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
-               trip.ID, 
-               trip.Departure, 
-               trip.Arrival, 
-               trip.Date, 
-               trip.DepartureTime, 
-               trip.BusPlate, 
-               trip.DriverName, 
-               &trip.Seats);
-        
-        if(strcmp(trip.ID, id) == 0){
-            printf("Trip found. Enter new details:\n");
-            Trip newTrip; 
-
-            printf("--- Changing Trip Details ---\n");
-            printf("Trip ID:%s",id);
-            
-            printf("\n");
-
-            printf("Departure Point:");
-            fgets(newTrip.Departure, sizeof(newTrip.Departure),stdin);
-            newTrip.Departure[strcspn(newTrip.Departure, "\n")] = 0;
-
-            printf("\n");
-            printf("Arrival Point:");
-            fgets(newTrip.Arrival, sizeof(newTrip.Arrival),stdin);
-            newTrip.Arrival[strcspn(newTrip.Arrival, "\n")] = 0;
-            printf("\n");
-
-            printf("Trip Date:");
-            fgets(newTrip.Date, sizeof(newTrip.Date),stdin);
-            newTrip.Date[strcspn(newTrip.Date, "\n")] = 0;
-            printf("\n");
-
-            printf("Trip departure time:");
-            fgets(newTrip.DepartureTime, sizeof(newTrip.DepartureTime),stdin);
-            newTrip.DepartureTime[strcspn(newTrip.DepartureTime, "\n")] = 0;
-            printf("\n");
-
-            printf("Bus Plate:");
-            fgets(newTrip.BusPlate, sizeof(newTrip.BusPlate),stdin);
-            newTrip.BusPlate[strcspn(newTrip.BusPlate, "\n")] = 0;
-            printf("\n");
-
-            printf("Driver Name:");
-            fgets(newTrip.DriverName, sizeof(newTrip.DriverName),stdin);
-            newTrip.DriverName[strcspn(newTrip.DriverName, "\n")] = 0;
-            printf("\n");
-
-            printf("Number of Seats:");
-            scanf("%d", &newTrip.Seats);
-            getchar();
-            printf("\n");
-
-            // Girilen bilgilerin özeti
-            printf("\n--- Trip Created Successfully ---\n");
-            printf("ID: %s\n", newTrip.ID);
-            printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
-            printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
-            printf("Plate: %s\n", newTrip.BusPlate);
-            printf("Driver: %s\n", newTrip.DriverName);
-            printf("Seats: %d\n", newTrip.Seats);
-            printf("---------------------------------\n");
-
-
-
-            /*
-            
-            // Dosyaya kaydetme
-            
-            */
-
-        
-
-            if(tempFile == NULL){
-                printf("Error File doesn't exist!\n");
-                return;
-            }
-
-            fprintf(tempFile, "%s|%s|%s|%s|%s|%s|%s|%d\n", 
-                    id, 
-                    newTrip.Departure, 
-                    newTrip.Arrival, 
-                    newTrip.Date, 
-                    newTrip.DepartureTime, 
-                    newTrip.BusPlate, 
-                    newTrip.DriverName, 
-                    newTrip.Seats);
-
-
-            // Yeni detayları al ve güncelle
-            // (Bu kısım kullanıcıdan yeni bilgileri alacak şekilde genişletilebilir)
-
-            // Dosyayı güncelleme işlemi burada yapılacak
-            // (Bu kısım dosyayı yeniden yazacak şekilde genişletilebilir)
-
-            
-
-        }else{
-            fputs(line, tempFile);
-        }
-
-        fclose(file);
-        fclose(tempFile);
-        remove("trips.dat");
-        rename("temp.dat", "trips.dat");
-        
-        printf("Trip details updated successfully.\n");
-            
-
-    }
+    return;
 }
 
 int checkID(char * id){
@@ -418,4 +421,4 @@ int checkID(char * id){
 
     fclose(file);
     return 0;  
-}
+}     
