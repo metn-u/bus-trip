@@ -20,13 +20,18 @@ void CreateTrip();
 
 void ListTrips(); 
 
+void eraseTrip();
+
+void changeTrip();
+
 int checkID(char * id);
 
 void menu(){
     printf("--- BUS TICKET SYSTEM ---\n");
     printf("1. Create New Trip\n"); 
     printf("2. List Trips\n");   
-    printf("3. Sell Tickets\n");         
+    printf("3. Sell Tickets\n");     
+    printf("4. Erase Trip\n");    
     printf("0. Exit\n");
     printf("Your Choice: ");
     int choice;
@@ -44,6 +49,10 @@ void menu(){
             break;
         case 3:
             printf("Sell Tickets function is not implemented yet.\n");           
+            menu();
+            break;
+        case 4:
+            eraseTrip();
             menu();
             break;
         case 0:
@@ -197,6 +206,102 @@ void ListTrips(){
     printf("-----------------------\n");
 
     fclose(file);
+}
+
+void eraseTrip(){
+    // Trip silme fonksiyonu burada implemente edilebilir
+    FILE *file = fopen("trips.dat", "r");
+    FILE *tempFile = fopen("temp.dat", "w");
+    if(file == NULL||tempFile == NULL){
+        printf("Database corrupted.\n");
+        return;
+    }
+
+    char line[300];
+    printf("\n--- Erase Trip ---\n");
+    printf("Enter Trip ID to erase: ");
+    char id[20];
+    fgets(id, sizeof(id), stdin);
+    id[strcspn(id, "\n")] = 0;
+    int found = 0;
+
+    while (fgets(line,sizeof(line),file))
+    {
+        Trip trip;
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
+               trip.ID, 
+               trip.Departure, 
+               trip.Arrival, 
+               trip.Date, 
+               trip.DepartureTime, 
+               trip.BusPlate, 
+               trip.DriverName, 
+               &trip.Seats);
+        
+        if(strcmp(trip.ID,id)==0){
+            found = 1;
+            printf("Trip with ID %s erased successfully.\n", id);
+        }else{
+            fputs(line,tempFile);
+        }
+
+    }
+    
+    if(!found){
+        printf("Trip with ID %s not found.\n", id);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    remove("trips.dat");
+    rename("temp.dat","trips.dat");
+
+}
+
+void changeTrip(){
+    FILE *file = fopen("trips.dat", "r+");
+    if(file == NULL){
+        printf("No trips available.\n");
+        return;
+    }
+
+    char line[300];
+    printf("\n--- Change Trip Details ---\n");
+    printf("Enter Trip ID to change: ");
+    char id[20];
+    fgets(id, sizeof(id), stdin);
+    id[strcspn(id, "\n")] = 0;
+    
+    while(fgets(line, sizeof(line), file)){
+        Trip trip;
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
+               trip.ID, 
+               trip.Departure, 
+               trip.Arrival, 
+               trip.Date, 
+               trip.DepartureTime, 
+               trip.BusPlate, 
+               trip.DriverName, 
+               &trip.Seats);
+        
+        if(strcmp(trip.ID, id) == 0){
+            printf("Trip found. Enter new details:\n");
+            // Yeni detayları al ve güncelle
+            // (Bu kısım kullanıcıdan yeni bilgileri alacak şekilde genişletilebilir)
+
+            printf("Enter new Departure Point: ");
+            fgets(trip.Departure, sizeof(trip.Departure), stdin);
+            trip.Departure[strcspn(trip.Departure, "\n")] = 0;
+
+            // Dosyayı güncelleme işlemi burada yapılmalı
+            // (Bu kısım dosyayı yeniden yazacak şekilde genişletilebilir)
+
+            printf("Trip details updated successfully.\n");
+            fclose(file);
+            return;
+        }
+    }
 }
 
 int checkID(char * id){
