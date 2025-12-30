@@ -32,12 +32,7 @@ void buyTicket();
 
 void cancelTicket();
 
-void buyTicket(){
-    printf("Buy Ticket function is not implemented yet.\n");
-}
-void cancelTicket(){
-    printf("Cancel Ticket function is not implemented yet.\n");
-}
+
 
 
 
@@ -158,57 +153,6 @@ Firstly i try recrusive function for menu but it is not efficient. İt may cause
 
 
 
-/*
-void menu(){
-    printf("--- BUS TICKET SYSTEM ---\n");
-    printf("1. Create New Trip\n");
-    printf("2. List Trips\n");
-    printf("3. Trip Details\n");
-    printf("4. Sell Tickets\n");
-    printf("5. Erase Trip\n");
-    printf("6. Change Trip Details\n");
-    printf("0. Exit\n");
-    printf("Your Choice: ");
-    int choice;
-    scanf("%d", &choice);
-    getchar();
-
-    switch(choice){
-        case 1:
-            CreateTrip();
-            menu();
-            break;
-        case 2:
-            ListTrips();
-            menu();
-            break;
-        case 3:
-            tripDetails();
-            menu();
-            break;
-        case 4:
-            printf("Sell Tickets function is not implemented yet.\n");
-            menu();
-            break;
-        case 5:
-            eraseTrip();
-            menu();
-            break;
-        case 6:
-            changeTrip();
-            menu();
-            break;
-        case 0:
-            printf("Exiting...\n");
-            exit(0);
-        default:
-            printf("Invalid choice! Please try again.\n");
-            menu();
-    }
-}
- */
-
-
 
 int main() {
 
@@ -267,10 +211,20 @@ void CreateTrip(){
     newTrip.DriverName[strcspn(newTrip.DriverName, "\n")] = 0;
     printf("\n");
 
-    printf("Number of Seats:");
-    scanf("%d", &newTrip.Seats);
-    getchar();
-    printf("\n");
+
+    // Checking number of seats is greater than zero because we cant define negative values as number of seats.
+
+    do{
+        printf("Number of Seats:");
+        scanf("%d", &newTrip.Seats);
+        getchar();
+        printf("\n");
+        if(newTrip.Seats <= 0){
+            printf("-> Number of seats must be greater than zero!\n");
+        }
+    }while(newTrip.Seats <= 0);
+    
+    
 
     // Girilen bilgilerin özeti
     printf("\n--- Trip Created Successfully ---\n");
@@ -420,10 +374,16 @@ void changeTrip(){
                 newTrip.DriverName[strcspn(newTrip.DriverName, "\n")] = 0;
                 printf("\n");
 
-                printf("Number of Seats:");
-                scanf("%d", &newTrip.Seats);
-                getchar();
-                printf("\n");
+                do{
+                    printf("Number of Seats:");
+                    scanf("%d", &newTrip.Seats);
+                    getchar();
+                    printf("\n");
+                    if(newTrip.Seats <= 0){
+                        printf("-> Number of seats must be greater than zero!\n");
+                    }
+                }while(newTrip.Seats <= 0);
+    
 
                 // Girilen bilgilerin özeti
                 printf("\n--- Trip Created Successfully ---\n");
@@ -609,3 +569,9 @@ void tripDetails(){
     fclose(file);
 }
 
+void buyTicket(){
+    printf("Buy Ticket function is not implemented yet.\n");
+}
+void cancelTicket(){
+    printf("Cancel Ticket function is not implemented yet.\n");
+}
