@@ -30,7 +30,8 @@ gcc main.c -o program
 - [ ] **Veri Okuma Güvenliği:** - `ListTrips` fonksiyonunda `sscanf` dönüş değeri kontrol edilecek (Hatalı satırlarda "123" gibi rastgele sayıların çıkması engellenecek).
 - [x] **Dosya Modu Güncellemesi:**
   - Yazma işlemleri için `ab` (append binary) yerine `a` (append text) modu kullanılarak format tutarlılığı sağlanacak.
-- [ ] **Hayalet verileri engelleme:** kodda boşluk kalınca bazen bufferda kalan veriyi yazdırıyor ve programda sıkıntı yaratıyor.Bir kontrol fonksiyonu oluşturulacak boş değer var mı diye ve değer döndürecek eğer istenmeyen değer döndürürse yazma/değiştirme yapılmayacak verilerde.
+- [x] **Hayalet verileri engelleme:** kodda boşluk kalınca bazen bufferda kalan veriyi yazdırıyor ve programda sıkıntı yaratıyor.Bir kontrol fonksiyonu oluşturulacak boş değer var mı diye ve değer döndürecek eğer istenmeyen değer döndürürse yazma/değiştirme yapılmayacak verilerde.
+- [ ]**Menu içinde harf girilmesi:** aşırı önemli olmasa da garip bir hata .
 
 ### 3. Teslimat Hazırlığı
 - [ ] Kodun okunabilirliği için fonksiyonlara yorum satırları eklenmesi.

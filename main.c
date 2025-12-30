@@ -32,7 +32,7 @@ void buyTicket();
 
 void cancelTicket();
 
-
+int validateTrip(Trip *trip);
 
 
 
@@ -225,44 +225,51 @@ void CreateTrip(){
     }while(newTrip.Seats <= 0);
     
     
+        if(!validateTrip(&newTrip)){
+                    printf("Invalid trip details entered. Creating operation aborted.\n");
+  
+                }
+        else{
+            // Girilen bilgilerin özeti
+                printf("\n--- Trip Created Successfully ---\n");
+                printf("ID: %s\n", newTrip.ID);
+                printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
+                printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
+                printf("Plate: %s\n", newTrip.BusPlate);
+                printf("Driver: %s\n", newTrip.DriverName);
+                printf("Seats: %d\n", newTrip.Seats);
+                printf("---------------------------------\n");
 
-    // Girilen bilgilerin özeti
-    printf("\n--- Trip Created Successfully ---\n");
-    printf("ID: %s\n", newTrip.ID);
-    printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
-    printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
-    printf("Plate: %s\n", newTrip.BusPlate);
-    printf("Driver: %s\n", newTrip.DriverName);
-    printf("Seats: %d\n", newTrip.Seats);
-    printf("---------------------------------\n");
 
 
+                /*
 
-    /*
+                // Dosyaya kaydetme
 
-    // Dosyaya kaydetme
+                */
 
-    */
+                FILE *file;
+                file = fopen("trips.dat", "a");
 
-    FILE *file;
-    file = fopen("trips.dat", "a");
+                if(file == NULL){
+                    printf("Error File doesn't exist!\n");
+                    return;
+                }
 
-    if(file == NULL){
-        printf("Error File doesn't exist!\n");
-        return;
-    }
+                fprintf(file, "%s|%s|%s|%s|%s|%s|%s|%d\n",
+                        newTrip.ID,
+                        newTrip.Departure,
+                        newTrip.Arrival,
+                        newTrip.Date,
+                        newTrip.DepartureTime,
+                        newTrip.BusPlate,
+                        newTrip.DriverName,
+                        newTrip.Seats);
 
-    fprintf(file, "%s|%s|%s|%s|%s|%s|%s|%d\n",
-            newTrip.ID,
-            newTrip.Departure,
-            newTrip.Arrival,
-            newTrip.Date,
-            newTrip.DepartureTime,
-            newTrip.BusPlate,
-            newTrip.DriverName,
-            newTrip.Seats);
+                fclose(file);
+        }
 
-    fclose(file);
+    
 
 
 
@@ -383,8 +390,6 @@ void changeTrip(){
                         printf("-> Number of seats must be greater than zero!\n");
                     }
                 }while(newTrip.Seats <= 0);
-    
-
                 // Girilen bilgilerin özeti
                 printf("\n--- Trip Created Successfully ---\n");
                 printf("ID: %s\n", id);
@@ -574,4 +579,17 @@ void buyTicket(){
 }
 void cancelTicket(){
     printf("Cancel Ticket function is not implemented yet.\n");
+}
+
+int validateTrip(Trip *trip)
+{
+    
+    if(trip->Seats <= 0){
+        return 0; // Invalid
+    }else if(strlen(trip->ID) == 0 || strlen(trip->Departure) == 0 || strlen(trip->Arrival) == 0 ||
+             strlen(trip->Date) == 0 || strlen(trip->DepartureTime) == 0 ||
+             strlen(trip->BusPlate) == 0 || strlen(trip->DriverName) == 0){
+        return 0; // Invalid
+    }
+    return 1; // Valid
 }
