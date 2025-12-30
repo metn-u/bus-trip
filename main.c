@@ -26,13 +26,18 @@ void changeTrip();
 
 int checkID(char * id);
 
+void tripDetails();
+
+    
+
 void menu(){
     printf("--- BUS TICKET SYSTEM ---\n");
     printf("1. Create New Trip\n"); 
     printf("2. List Trips\n");   
-    printf("3. Sell Tickets\n");     
-    printf("4. Erase Trip\n");    
-    printf("5. Change Trip Details\n");
+    printf("3. Trip Details\n");
+    printf("4. Sell Tickets\n");     
+    printf("5. Erase Trip\n");    
+    printf("6. Change Trip Details\n");
     printf("0. Exit\n");
     printf("Your Choice: ");
     int choice;
@@ -49,14 +54,18 @@ void menu(){
             menu();
             break;
         case 3:
-            printf("Sell Tickets function is not implemented yet.\n");           
+            tripDetails();
             menu();
             break;
         case 4:
-            eraseTrip();
+            printf("Sell Tickets function is not implemented yet.\n");           
             menu();
             break;
         case 5:
+            eraseTrip();
+            menu();
+            break;
+        case 6:
             changeTrip();
             menu();
             break;
@@ -422,3 +431,52 @@ int checkID(char * id){
     fclose(file);
     return 0;  
 }     
+
+void tripDetails(){
+    FILE *file = fopen("trips.dat", "r");
+    if(file == NULL){
+        printf("No trips available.\n");
+        return;
+    }
+
+    char id[20];
+    printf("Enter Trip ID to view details: ");
+    fgets(id, sizeof(id), stdin);
+    id[strcspn(id, "\n")] = 0;
+
+    char line[250];
+    int found = 0;
+
+    while(fgets(line, sizeof(line), file)){
+        Trip trip;
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
+               trip.ID, 
+               trip.Departure, 
+               trip.Arrival, 
+               trip.Date, 
+               trip.DepartureTime, 
+               trip.BusPlate, 
+               trip.DriverName, 
+               &trip.Seats);
+        
+        if(strcmp(trip.ID, id) == 0){
+            found = 1;
+            printf("\n--- Trip Details ---\n");
+            printf("ID: %s\n", trip.ID);
+            printf("Route: %s -> %s\n", trip.Departure, trip.Arrival);
+            printf("Date/Time: %s at %s\n", trip.Date, trip.DepartureTime);
+            printf("Plate: %s\n", trip.BusPlate);
+            printf("Driver: %s\n", trip.DriverName);
+            printf("Seats: %d\n", trip.Seats);
+            printf("---------------------\n");
+            break;
+        }
+    }
+
+    if(!found){
+        printf("Trip with ID %s not found.\n", id);
+    }
+
+    fclose(file);
+}
+
