@@ -18,7 +18,7 @@ typedef struct{
 
 void CreateTrip();
 
-void ListTrips(); 
+void ListTrips();
 
 void eraseTrip();
 
@@ -28,21 +28,150 @@ int checkID(char * id);
 
 void tripDetails();
 
+void buyTicket();
+
+void cancelTicket();
+
+void buyTicket(){
+    printf("Buy Ticket function is not implemented yet.\n");
+}
+void cancelTicket(){
+    printf("Cancel Ticket function is not implemented yet.\n");
+}
+
+
+
+void ticketMenu(){
+    while(1){
+            printf("--- BUS TİCKET SYSTEM ---\n");
+            printf("1. Buy Ticket\n");
+            printf("2. Cancel Ticket\n");
+            printf("0. Exit\n");
+            printf("Your Choice: ");
+
+            int choice;
+
+            scanf("%d",&choice);
+            getchar();
+
+            switch(choice){
+            case 1:
+                buyTicket();
+                break;
+            
+            case 2:
+                cancelTicket();
+                break;
+            case 0:
+                printf("Exiting...\n");
+                return;
+            default:
+                printf("Invalid choice! Please try again.");
+
+        }
+
+
+    }
+}
+
+void tripMenu(){
     
+    while(1){
+
+                printf("--- BUS TRİP SYSTEM ---\n");
+                printf("1. Create New Trip\n");
+                printf("2. List Trips\n");
+                printf("3. Trip Details\n");
+                printf("4. Erase Trip\n");
+                printf("5. Change Trip Details\n");
+                printf("0. Exit\n");
+                printf("Your Choice: ");
+
+                int choice;
+
+                scanf("%d", &choice);
+                getchar();
+
+                switch(choice){
+                    case 1:
+                        CreateTrip();
+                        break;
+                    case 2:
+                        ListTrips();
+                        break;
+                    case 3:
+                        tripDetails();
+                        break;
+                    case 4:
+                        eraseTrip();
+                        break;
+                    case 5:
+                        changeTrip();
+                        break;
+                    case 0:
+                        printf("Exiting...\n");
+                        return;
+                    default:
+                        printf("Invalid choice! Please try again.\n");
+
+                    }
+                }
+
+}
+
+
 
 void menu(){
+
+    int choice;
+    while(1){
+        printf("--- MAIN MENU ---\n");
+        printf("1. Trip Management\n");
+        printf("2. Ticket Management\n");
+        printf("0. Exit\n");
+        printf("Your Choice: ");
+        scanf("%d", &choice);
+        getchar();
+
+        switch(choice){
+            case 1:
+                tripMenu();
+                break;
+            case 2:
+                ticketMenu();
+                break;
+            case 0:
+                printf("Exiting...\n");
+                exit(0);
+            default :
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+}
+
+
+/*
+
+Firstly i try recrusive function for menu but it is not efficient. İt may cause stack overflow.
+
+*/
+
+
+
+/*
+void menu(){
     printf("--- BUS TICKET SYSTEM ---\n");
-    printf("1. Create New Trip\n"); 
-    printf("2. List Trips\n");   
+    printf("1. Create New Trip\n");
+    printf("2. List Trips\n");
     printf("3. Trip Details\n");
-    printf("4. Sell Tickets\n");     
-    printf("5. Erase Trip\n");    
+    printf("4. Sell Tickets\n");
+    printf("5. Erase Trip\n");
     printf("6. Change Trip Details\n");
     printf("0. Exit\n");
     printf("Your Choice: ");
     int choice;
     scanf("%d", &choice);
-    getchar(); 
+    getchar();
 
     switch(choice){
         case 1:
@@ -58,7 +187,7 @@ void menu(){
             menu();
             break;
         case 4:
-            printf("Sell Tickets function is not implemented yet.\n");           
+            printf("Sell Tickets function is not implemented yet.\n");
             menu();
             break;
         case 5:
@@ -77,7 +206,7 @@ void menu(){
             menu();
     }
 }
-
+ */
 
 
 
@@ -94,7 +223,7 @@ int main() {
 }
 
 void CreateTrip(){
-    Trip newTrip; 
+    Trip newTrip;
 
     printf("--- Creating New Trip ---\n");
     printf("Trip ID:");
@@ -156,12 +285,12 @@ void CreateTrip(){
 
 
     /*
-    
+
     // Dosyaya kaydetme
-    
+
     */
 
-    FILE *file; 
+    FILE *file;
     file = fopen("trips.dat", "a");
 
     if(file == NULL){
@@ -169,19 +298,19 @@ void CreateTrip(){
         return;
     }
 
-    fprintf(file, "%s|%s|%s|%s|%s|%s|%s|%d\n", 
-            newTrip.ID, 
-            newTrip.Departure, 
-            newTrip.Arrival, 
-            newTrip.Date, 
-            newTrip.DepartureTime, 
-            newTrip.BusPlate, 
-            newTrip.DriverName, 
+    fprintf(file, "%s|%s|%s|%s|%s|%s|%s|%d\n",
+            newTrip.ID,
+            newTrip.Departure,
+            newTrip.Arrival,
+            newTrip.Date,
+            newTrip.DepartureTime,
+            newTrip.BusPlate,
+            newTrip.DriverName,
             newTrip.Seats);
-            
+
     fclose(file);
-    
-    
+
+
 
 
 }
@@ -197,24 +326,24 @@ void ListTrips(){
     printf("\n--- Available Trips ---\n");
     while(fgets(line, sizeof(line), file)){
         Trip trip;
-        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
-               trip.ID, 
-               trip.Departure, 
-               trip.Arrival, 
-               trip.Date, 
-               trip.DepartureTime, 
-               trip.BusPlate, 
-               trip.DriverName, 
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d",
+               trip.ID,
+               trip.Departure,
+               trip.Arrival,
+               trip.Date,
+               trip.DepartureTime,
+               trip.BusPlate,
+               trip.DriverName,
                &trip.Seats);
-        
-        printf("ID: %s | Route: %s -> %s | Date/Time: %s at %s | Plate: %s | Driver: %s | Seats: %d\n", 
-               trip.ID, 
-               trip.Departure, 
-               trip.Arrival, 
-               trip.Date, 
-               trip.DepartureTime, 
-               trip.BusPlate, 
-               trip.DriverName, 
+
+        printf("ID: %s | Route: %s -> %s | Date/Time: %s at %s | Plate: %s | Driver: %s | Seats: %d\n",
+               trip.ID,
+               trip.Departure,
+               trip.Arrival,
+               trip.Date,
+               trip.DepartureTime,
+               trip.BusPlate,
+               trip.DriverName,
                trip.Seats);
     }
     printf("-----------------------\n");
@@ -242,22 +371,22 @@ void changeTrip(){
     while (fgets(line,sizeof(line),file))
     {
         Trip trip;
-        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
-               trip.ID, 
-               trip.Departure, 
-               trip.Arrival, 
-               trip.Date, 
-               trip.DepartureTime, 
-               trip.BusPlate, 
-               trip.DriverName, 
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d",
+               trip.ID,
+               trip.Departure,
+               trip.Arrival,
+               trip.Date,
+               trip.DepartureTime,
+               trip.BusPlate,
+               trip.DriverName,
                &trip.Seats);
-        
+
         if(strcmp(trip.ID,id)==0){
             found = 1;
             printf("Trip with ID %s found. Enter new details.\n", id);
             // Yeni detayları al
 
-                Trip newTrip; 
+                Trip newTrip;
 
                 printf("\n");
 
@@ -309,24 +438,24 @@ void changeTrip(){
 
 
                 /*
-                
+
                 // Dosyaya kaydetme
-                
+
                 */
 
-                
 
-                fprintf(tempFile, "%s|%s|%s|%s|%s|%s|%s|%d\n", 
-                        id, 
-                        newTrip.Departure, 
-                        newTrip.Arrival, 
-                        newTrip.Date, 
-                        newTrip.DepartureTime, 
-                        newTrip.BusPlate, 
-                        newTrip.DriverName, 
+
+                fprintf(tempFile, "%s|%s|%s|%s|%s|%s|%s|%d\n",
+                        id,
+                        newTrip.Departure,
+                        newTrip.Arrival,
+                        newTrip.Date,
+                        newTrip.DepartureTime,
+                        newTrip.BusPlate,
+                        newTrip.DriverName,
                         newTrip.Seats);
-                        
-                
+
+
 
 
 
@@ -339,7 +468,7 @@ void changeTrip(){
         }
 
     }
-    
+
     if(!found){
         printf("Trip with ID %s not found.\n", id);
     }
@@ -353,7 +482,7 @@ void changeTrip(){
 }
 
 void eraseTrip(){
-    
+
      // Trip silme fonksiyonu burada implemente edilebilir
     FILE *file = fopen("trips.dat", "r");
     FILE *tempFile = fopen("temp.dat", "w");
@@ -364,7 +493,7 @@ void eraseTrip(){
 
     char line[300];
     printf("\n--- Erase Trip ---\n");
-    
+
     char id[20];
     printf("Type Trip ID to erase.\n");
     fgets(id, sizeof(id), stdin);
@@ -374,16 +503,16 @@ void eraseTrip(){
     while (fgets(line,sizeof(line),file))
     {
         Trip trip;
-        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
-               trip.ID, 
-               trip.Departure, 
-               trip.Arrival, 
-               trip.Date, 
-               trip.DepartureTime, 
-               trip.BusPlate, 
-               trip.DriverName, 
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d",
+               trip.ID,
+               trip.Departure,
+               trip.Arrival,
+               trip.Date,
+               trip.DepartureTime,
+               trip.BusPlate,
+               trip.DriverName,
                &trip.Seats);
-        
+
         if(strcmp(trip.ID,id)==0){
             found = 1;
             printf("Trip with ID %s erased successfully.\n", id);
@@ -392,7 +521,7 @@ void eraseTrip(){
         }
 
     }
-    
+
     if(!found){
         printf("Trip with ID %s not found.\n", id);
     }
@@ -417,7 +546,7 @@ int checkID(char * id){
     char tempID[20];
 
     while(fgets(line, sizeof(line), file)){
-        
+
         sscanf(line, "%[^|]|", tempID);
 
         if(strcmp(tempID, id) == 0){
@@ -426,11 +555,11 @@ int checkID(char * id){
             return 1;
         }
     }
-    
+
 
     fclose(file);
-    return 0;  
-}     
+    return 0;
+}
 
 void tripDetails(){
     FILE *file = fopen("trips.dat", "r");
@@ -449,16 +578,16 @@ void tripDetails(){
 
     while(fgets(line, sizeof(line), file)){
         Trip trip;
-        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d", 
-               trip.ID, 
-               trip.Departure, 
-               trip.Arrival, 
-               trip.Date, 
-               trip.DepartureTime, 
-               trip.BusPlate, 
-               trip.DriverName, 
+        sscanf(line, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%d",
+               trip.ID,
+               trip.Departure,
+               trip.Arrival,
+               trip.Date,
+               trip.DepartureTime,
+               trip.BusPlate,
+               trip.DriverName,
                &trip.Seats);
-        
+
         if(strcmp(trip.ID, id) == 0){
             found = 1;
             printf("\n--- Trip Details ---\n");
