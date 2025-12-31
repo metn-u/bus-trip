@@ -390,15 +390,9 @@ void changeTrip(){
                         printf("-> Number of seats must be greater than zero!\n");
                     }
                 }while(newTrip.Seats <= 0);
-                // Girilen bilgilerin özeti
-                printf("\n--- Trip Created Successfully ---\n");
-                printf("ID: %s\n", id);
-                printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
-                printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
-                printf("Plate: %s\n", newTrip.BusPlate);
-                printf("Driver: %s\n", newTrip.DriverName);
-                printf("Seats: %d\n", newTrip.Seats);
-                printf("---------------------------------\n");
+
+                
+                
 
 
 
@@ -408,7 +402,21 @@ void changeTrip(){
 
                 */
 
+                if(!validateTrip(&newTrip)){
+                    printf("Invalid trip details entered. Update operation aborted.\n");
+                    fputs(line,tempFile); // Eski veriyi koru
+                }else{
 
+                // Girilen bilgilerin özeti
+                printf("\n--- Trip Created Successfully ---\n");
+                printf("ID: %s\n", id);
+                printf("Route: %s -> %s\n", newTrip.Departure, newTrip.Arrival);
+                printf("Date/Time: %s at %s\n", newTrip.Date, newTrip.DepartureTime);
+                printf("Plate: %s\n", newTrip.BusPlate);
+                printf("Driver: %s\n", newTrip.DriverName);
+                printf("Seats: %d\n", newTrip.Seats);
+                printf("---------------------------------\n");
+                
 
                 fprintf(tempFile, "%s|%s|%s|%s|%s|%s|%s|%d\n",
                         id,
@@ -421,7 +429,7 @@ void changeTrip(){
                         newTrip.Seats);
 
 
-
+                }
 
 
 
