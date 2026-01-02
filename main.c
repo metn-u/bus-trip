@@ -577,7 +577,7 @@ void buyTicket(){
                trip.DriverName,
                &trip.Seats);
 
-        if(strcmp(trip.ID, newTicket.TripId) == 0){
+        if(strcmp(trip.ID, newTicket.TripId) == 0&&trip.Seats>0){
             tripFound = 1;
 
             // For simplicity, assiging last number
@@ -594,7 +594,7 @@ void buyTicket(){
     fclose(tripFile);
 
     if(!tripFound){
-        printf("Trip with ID %s not found.\n", newTicket.TripId);
+        printf("Available trip with ID %s not found.\n", newTicket.TripId);
         fclose(file);
         return;
     }
